@@ -1,0 +1,160 @@
+// Да се разработи главна програма работеща с клас самолетни билити,класа има полета:
+//-дата на тръгване;
+//-дата на пристигане,
+//-час на явяване на терминала.
+//Класа трябва да позволява тези 3 полета да ги има за комплексни пътувания, имена на пътуващия и номер на полет.
+//Да се направят всички инстанциии на този клас за полетите продадени от едно бюро.
+//Класа да има член функциии getData и display.
+//Главната прогврама да работи и със следните функциии :
+//-запазване масив със всички продажби в края на работния ден на диск(изработете конвенция, при която в края на деня обновяваме записите);
+//-за издаване на справка директно от файл, като се изваждат имената и номера на полета, за всички клиенти, които на определена дата трябва
+//да летят до определено място;
+//-справката да се записва в нов файл;
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+class DMG{
+public:
+	int D, M, G; //Член-данни на класа DMG
+	void getData(); //Прототип на член-функцията readDat
+	void display(ostream&);//Прототип на член-функцията writeDat
+};
+
+
+// Дефиниция на член-функцията readDat от класа DMG
+void DMG::getData(){
+	cout << "- den: "; cin >> D;
+	cout << "- mesec: "; cin >> M;
+	cout << "- godina: "; cin >> G;
+}
+
+
+// Дефиниция на член-функцията writeDat от класа DMG
+void DMG::display(ostream &p = cout){
+	p << D << '.' << M << '.' << G << endl;
+}
+
+
+int datcmp(DMG D1, DMG D2)
+{
+	if (D1.G != D2.G) return D1.G - D2.G;
+	if (D1.M != D2.M) return D1.M - D2.M;
+	return D1.D - D2.D;
+}
+
+
+
+class Bilet {
+
+public:
+
+	DMG depart, ret;
+	float chas_term;
+
+	void getData();
+	void display(ostream&);
+};
+
+
+void Bilet::getData() {
+
+	cout << " \n Vavedete data na trygvane: "; depart.getData();
+
+	cout << " \n Vavedete data na pristigane: "; ret.getData();
+
+	cout << " \n Vavedete chas za pristigane na terminala: "; cin >> chas_term;
+
+}
+
+
+void Bilet::display(ostream &p = cout) {
+
+	p << " \n\t Data na trygvane: "; depart.display();
+
+	p << " \n\t Data na pristigane: "; ret.display();
+
+	p << " \n\t Chas za pristigane na terminala: " << chas_term;
+
+}
+
+
+class ComplexTicket:public Bilet {
+
+public: 
+
+	char ime[20], flight_num[7];
+
+	string connection_flight[5];
+	int br_prik;
+
+	void getInfo();
+	void displayInfo(ostream&);
+
+};
+
+void ComplexTicket::getInfo() {
+	
+	cin.ignore();
+	cout << " \n Ime na patuvasht: "; cin.getline(ime, 19);
+
+	cout << " \n Nomer na polet: "; cin >> flight_num;
+
+	getData(); //ot klas Bilet, za trite poleta
+
+	cout << " \n Kolko prikachvaniq ima? "; cin >> prik;
+	cout << " \nVavedete spirki: ";
+	for (int i = 0; i < prik; i++) {
+
+		cout << "\n Spirka " << i; getline(cin, connection_flight[i]);
+	}
+
+}
+
+ComplexTicket A; ofstream outf; ifstream inf; char main_bin[15];
+void Zapis_file() {
+
+	outf.open(main_bin, ios::app | ios::binary);
+
+	outf.write((char*)&A, sizeof (A));
+
+	outf.close();
+
+}
+
+
+void spravka() {
+	DMG contr_date;
+	string destination;
+
+	inf.open(main_bin, ios::in | ios::binary);
+
+	while (inf.read((char*)&A, sizeof (A))) {
+
+		if (datcmp(A.depart, contr_date) == 0 && strcmp_s(destination, A.connection_flight[br_prik]))
+
+
+
+
+void main() {
+
+	ComplexTicket tickets[10]; int br;
+	int operCode;
+
+	do {
+		cout << "\n\n\t\t MENU:\n";
+		cout << "\t1 - dobavqne danni za bilet;\n";
+		cout << "\t2 - izvejdane dannite na vsichki knigi na ekrana;\n";
+		cout << "\t3 - izvejdane dannite na vsichki knigi v doichen file;\n";
+		cout << "\t4 - iztrivane na komponenta\n";
+		cout << "\t5 - namirane sumata na cenite na knigite, nevyrnati v srok;\n";
+		cout << "\t6 - syzdavane masiv s dannite na vsichki knigi ot zadaden avtor;\n";
+		cout << "\t7 - syzdavane dvoichen file s dannite na knigite nad 200 stranici;\n";
+		cout << "\t8 - syzdavane dvoichen file sydyrjasht zaglaviqta i cenite na \n"
+			<< "\t knigite s cena nad 10 lv.\n";
+		cout << " Posochete operaciq ili 0 za krai: "; cin >> operCode;
+}
