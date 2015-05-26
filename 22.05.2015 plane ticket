@@ -132,11 +132,22 @@ void spravka() {
 	string destination;
 
 	inf.open(main_bin, ios::in | ios::binary);
+	outf.open("spravka.txt");
 
 	while (inf.read((char*)&A, sizeof (A))) {
 
-		if (datcmp(A.depart, contr_date) == 0 && strcmp_s(destination, A.connection_flight[br_prik]))
-
+		if (datcmp(A.depart, contr_date) == 0 && (strcmp_s(destination, A.connection_flight[br_prik]))==0) {
+		
+		cout<<" \n\tIme: "<<A.ime;
+		cout<<" \n\tNomer na polet: "<<A.flight_num;
+		
+		outf<<" \n\tIme: "<<A.ime<<" Nomer na polet: "<<A.flight_num;;
+		
+			}
+		}
+		
+		inf.close(); outf.close();
+	}
 
 
 
